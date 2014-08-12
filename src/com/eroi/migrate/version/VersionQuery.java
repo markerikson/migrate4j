@@ -23,9 +23,9 @@ public class VersionQuery {
 		String versionTableNew = cfg.getFullQualifiedVersionTable();
 		if (Execute.tableExists(conn, versionTableNew)) {
 
-	    	String qVersionTab = g.wrapName(versionTableNew);
-	    	String qVersionCol = g.wrapName(ConfigStore.VERSION_FIELD_NAME);
-	    	String qProjectCol = g.wrapName(ConfigStore.PROJECT_FIELD_NAME);
+	    	String qVersionTab = g.wrapName(versionTableNew, false, false);
+	    	String qVersionCol = g.wrapName(ConfigStore.VERSION_FIELD_NAME, false, false);
+	    	String qProjectCol = g.wrapName(ConfigStore.PROJECT_FIELD_NAME, false, false);
 	    	String projectID = cfg.getProjectID(); 
 
 			// This should run on every JDBC complaint DB . . . I hope
@@ -56,9 +56,9 @@ public class VersionQuery {
 		String versionTableNew = cfg.getFullQualifiedVersionTable();
 		if (Execute.tableExists(conn, versionTableNew)) {
 
-	    	String qVersionTab = g.wrapName(versionTableNew);
-	    	String qVersionCol = g.wrapName(ConfigStore.VERSION_FIELD_NAME);
-	    	String qProjectCol = g.wrapName(ConfigStore.PROJECT_FIELD_NAME);
+	    	String qVersionTab = g.wrapName(versionTableNew, false, false);
+	    	String qVersionCol = g.wrapName(ConfigStore.VERSION_FIELD_NAME, false, false);
+	    	String qProjectCol = g.wrapName(ConfigStore.PROJECT_FIELD_NAME, false, false);
 	    	String projectID = cfg.getProjectID(); 
 	    	
 			// This should run on every JDBC complaint DB . . . I hope
@@ -95,9 +95,9 @@ public class VersionQuery {
 		String versionTableNew = cfg.getFullQualifiedVersionTable();
 		if (Execute.tableExists(conn, versionTableNew)) {
 
-	    	String qVersionTab = g.wrapName(versionTableNew);
-	    	String qVersionCol = g.wrapName(ConfigStore.VERSION_FIELD_NAME);
-	    	String qProjectCol = g.wrapName(ConfigStore.PROJECT_FIELD_NAME);
+	    	String qVersionTab = g.wrapName(versionTableNew, false, false);
+	    	String qVersionCol = g.wrapName(ConfigStore.VERSION_FIELD_NAME, false, false);
+	    	String qProjectCol = g.wrapName(ConfigStore.PROJECT_FIELD_NAME, false, false);
 	    	
 			//This should run on every JDBC complaint DB . . . I hope
 		    query = String.format(

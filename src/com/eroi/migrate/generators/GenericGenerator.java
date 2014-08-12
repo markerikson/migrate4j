@@ -27,6 +27,11 @@ public class GenericGenerator implements Generator {
 	private static Log log = Log.getLog(GenericGenerator.class);
 
 	protected final Connection connection;
+	
+	
+	private static boolean quoteIdentifiers = true;
+	private static boolean changeIdentifierCase = false;
+	private static boolean changeCaseToUpper = true;
 
 	public GenericGenerator(Connection aConnection) {
 		this.connection = aConnection;
@@ -34,6 +39,36 @@ public class GenericGenerator implements Generator {
 
 	public Connection getConnection() {
 		return this.connection;
+	}
+
+	public static boolean getQuoteIdentifiers()
+	{
+		return quoteIdentifiers;
+	}
+
+	public static void setQuoteIdentifiers(boolean quoteIdentifiers)
+	{
+		GenericGenerator.quoteIdentifiers = quoteIdentifiers;
+	}
+
+	public static boolean getChangeIdentifierCase()
+	{
+		return changeIdentifierCase;
+	}
+
+	public static void setChangeIdentifierCase(boolean changeIdentifierCase)
+	{
+		GenericGenerator.changeIdentifierCase = changeIdentifierCase;
+	}
+
+	public static boolean getChangeCaseToUpper()
+	{
+		return changeCaseToUpper;
+	}
+
+	public static void setChangeCaseToUpper(boolean changeCaseToUpper)
+	{
+		GenericGenerator.changeCaseToUpper = changeCaseToUpper;
 	}
 
 	public String addColumnStatement(Column column, String tableName,
@@ -214,6 +249,8 @@ public class GenericGenerator implements Generator {
 			try {
 
 				DatabaseMetaData databaseMetaData = this.connection.getMetaData();
+				tableName = updateIdentifierCase(tableName);
+				columnName = updateIdentifierCase(columnName);
 
 				resultSet = databaseMetaData.getColumns(null, null, tableName, columnName);
 
@@ -361,6 +398,7 @@ public class GenericGenerator implements Generator {
 			try {
 
 				DatabaseMetaData databaseMetaData = this.connection.getMetaData();
+				childTableName = updateIdentifierCase(childTableName);
 
 				resultSet = databaseMetaData.getImportedKeys(null, null, childTableName);
 
@@ -398,6 +436,7 @@ public class GenericGenerator implements Generator {
 
 			try {
 				DatabaseMetaData databaseMetaData = this.connection.getMetaData();
+				tableName = updateIdentifierCase(tableName);
 
 				resultSet = databaseMetaData.getPrimaryKeys(null, null, tableName);
 
@@ -424,6 +463,7 @@ public class GenericGenerator implements Generator {
 			try {
 
 				DatabaseMetaData databaseMetaData = this.connection.getMetaData();
+				tableName = updateIdentifierCase(tableName);
 
 				resultSet = databaseMetaData.getPrimaryKeys(null, null, tableName);
 
@@ -475,6 +515,7 @@ public class GenericGenerator implements Generator {
 			try {
 
 				DatabaseMetaData databaseMetaData = this.connection.getMetaData();
+				tableName = updateIdentifierCase(tableName);
 
 				resultSet = databaseMetaData.getIndexInfo(null, null, tableName, false, false);
 
@@ -568,13 +609,33 @@ public class GenericGenerator implements Generator {
 	}
 
 	public String wrapName(String name) {
+		return wrapName(name, GenericGenerator.changeIdentifierCase, GenericGenerator.changeCaseToUpper);
+	}
+	
+	public String wrapName(String name, boolean changeIdentifierCase, boolean changeCaseToUpper) {
 		StringBuffer wrap = new StringBuffer();
+		
+		name = updateIdentifierCase(name, changeIdentifierCase, changeCaseToUpper);
+		
 
 		wrap.append(getIdentifier())
 			.append(name)
 			.append(getIdentifier());
 
 		return wrap.toString();
+	}
+	
+	private String updateIdentifierCase(String name) {
+		return updateIdentifierCase(name, GenericGenerator.changeIdentifierCase, GenericGenerator.changeCaseToUpper);
+	}
+	
+	private String updateIdentifierCase(String name, boolean changeIdentifierCase, boolean changeCaseToUpper) {
+		if(changeIdentifierCase)
+		{
+			name = changeCaseToUpper ? name.toUpperCase() : name.toLowerCase();
+		}
+		
+		return name;
 	}
 
 	public String[] wrapStrings(String[] strings) {
@@ -589,7 +650,7 @@ public class GenericGenerator implements Generator {
 	}
 
 	protected String getIdentifier() {
-		return "\"";
+		return quoteIdentifiers ? "\"" : "";
 	}
 
 	protected String makeColumnString(Column column) {
@@ -677,6 +738,7 @@ public class GenericGenerator implements Generator {
 			try {
 
 				DatabaseMetaData databaseMetaData = this.connection.getMetaData();
+				tableName = updateIdentifierCase(tableName);
 
 				resultSet = databaseMetaData.getColumns(null, null, tableName, "%");
 
@@ -712,6 +774,7 @@ public class GenericGenerator implements Generator {
 			try {
 
 				DatabaseMetaData databaseMetaData = this.connection.getMetaData();
+				tableName = updateIdentifierCase(tableName);
 
 				resultSet = databaseMetaData.getColumns(null, null, tableName, "%");
 

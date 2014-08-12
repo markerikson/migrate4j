@@ -70,6 +70,7 @@ public interface Generator {
 	public String renameColumn(String newColumnName, String oldColumnName, String tableName);
 	
 	public String wrapName(String name);
+	public String wrapName(String name, boolean changeIdentifierCase, boolean changeCaseToUpper);
 
 	/**
 	 * Some DBs need more than one statement to implement a column change. Therefore we let the 
