@@ -520,11 +520,12 @@ public class GenericGenerator implements Generator {
 
 				DatabaseMetaData databaseMetaData = this.connection.getMetaData();
 
-				resultSet = databaseMetaData.getTables(this.connection.getCatalog(), "", tableName, null);
+				resultSet = databaseMetaData.getTables(null, null, null, null);
 
 				if (resultSet != null) {
 					while (resultSet.next()) {
-						if (tableName.equalsIgnoreCase(resultSet.getString("TABLE_NAME"))) {
+						String currentTableName = resultSet.getString("TABLE_NAME");
+						if (tableName.equalsIgnoreCase(currentTableName)) {
 							return true;
 						}
 					}
