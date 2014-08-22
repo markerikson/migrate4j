@@ -1,6 +1,6 @@
 <project name="migrate4j" default="run_tests" basedir=".">
 	
-	<property name="version.number" value="0.06" />
+	<property name="version.number" value="0.07" />
 	
 	<property name="main.src.dir" value="${basedir}/src" />
 	<property name="main.test.dir" value="${basedir}/test" />

@@ -6,6 +6,7 @@ import java.sql.Statement;
 
 import com.eroi.migrate.AbstractMigration;
 import com.eroi.migrate.ConfigStore;
+import com.eroi.migrate.generators.GenericGenerator;
 import com.eroi.migrate.misc.Closer;
 import com.eroi.migrate.misc.SchemaMigrationException;
 
@@ -24,6 +25,8 @@ public class Migration_2 extends AbstractMigration {
 	}
 
 	public void up() {
+		boolean oldUpperCaseValue = GenericGenerator.getChangeCaseToUpper();
+		GenericGenerator.setChangeCaseToUpper(false);
 		if (_oldVersionTableExist()) {
 			int existingVersion = _getExistingVersion();
 
@@ -37,6 +40,16 @@ public class Migration_2 extends AbstractMigration {
 						existingVersion							// %s);
 			);
 			executeStatement(query);
+		}
+		
+		GenericGenerator.setChangeCaseToUpper(oldUpperCaseValue);
+		try
+		{
+			this.getConfiguration().getConnection().commit();
+		}
+		catch (SQLException e)
+		{
+			
 		}
 	}
 
